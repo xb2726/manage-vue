@@ -71,7 +71,8 @@ export default {
         if (res !== undefined) {
           ElMessage.success("登录成功");
           localStorage.setItem("ms_username", res.code);
-          localStorage.setItem("token", res.data);
+          localStorage.setItem("SD_TOKEN", res.data.token);
+          localStorage.setItem("ele_login", '1');
           router.push("/");
         }
 

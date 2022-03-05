@@ -40,7 +40,7 @@
         <el-table-column label="标题" show-overflow-tooltip>
           <template #default="scope">
             <div title="点击查看">
-              <el-link @click="hrefClick(scope.row.pdfUrl)">{{
+              <el-link type="primary" @click="hrefClick(scope.row.pdfUrl)">{{
                 scope.row.title
               }}</el-link>
             </div>
@@ -89,6 +89,7 @@ import { pageQuery } from "../../api/industrystock";
 
 export default {
   setup () {
+
     const param = reactive({
       title: "",
       pageNum: 1,
@@ -99,6 +100,7 @@ export default {
     const pageTotal = ref(0);
 
     const getData = () => {
+      console.log("开始查询")
       pageQuery(param).then((res) => {
 
         tableData.value = res.data.records;
@@ -121,7 +123,7 @@ export default {
     };
     // 跳转
     const hrefClick = (pdfUrl) => {
-      window.open(pdfUrl);
+      window.open(pdfUrl, '_blank');
     }
     // 索引
     const indexMethod = (index) => {
