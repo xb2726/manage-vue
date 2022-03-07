@@ -7,3 +7,11 @@ export function pageQuery (query) {
     params: query
   })
 }
+
+export function readRecord (query) {
+  return request({
+    url: '/manage/industryRecord',
+    method: 'post',
+    params: query
+  })
+}

@@ -138,18 +138,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-
-  console.log(localStorage.ele_login);
-  console.log(to.name !== 'Login')
-  if (to.name !== 'Login' && localStorage.ele_login !== '1') {
-    console.log("ooooooooooooooo")
-    next({ name: 'Login' })
-  }
-  else {
-    console.log("lllllllllll")
-    next()
-  }
-
+  next();
   // document.title = `${to.meta.title} `;
   // const role = localStorage.getItem('ms_username');
   // if (!role && to.path !== '/login') {

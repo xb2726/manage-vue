@@ -37,10 +37,10 @@
           width="55"
           align="center"
         ></el-table-column>
-        <el-table-column label="标题" show-overflow-tooltip>
+        <el-table-column label="标题" show-overflow-tooltip="true">
           <template #default="scope">
             <div title="点击查看">
-              <el-link type="primary" @click="hrefClick(scope.row.pdfUrl)">{{
+              <el-link type="primary" :href="scope.row.pdfUrl" @click="handleRead(scope.row.id)" target="_blank" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;display: block">{{
                 scope.row.title
               }}</el-link>
             </div>
@@ -85,7 +85,7 @@
 
 <script>
 import { ref, reactive } from "vue";
-import { pageQuery } from "../../api/industrystock";
+import { pageQuery,readRecord } from "../../api/industrystock";
 
 export default {
   setup () {
@@ -121,9 +121,12 @@ export default {
       param.pageNum = val;
       getData();
     };
-    // 跳转
-    const hrefClick = (pdfUrl) => {
-      window.open(pdfUrl, '_blank');
+    // 点击记录
+    const handleRead = (id) => {
+      const param = {
+        industryId: id,
+      };
+      readRecord(param);
     }
     // 索引
     const indexMethod = (index) => {
@@ -137,8 +140,8 @@ export default {
       getData,
       handleSearch,
       handlePageChange,
-      hrefClick,
-      indexMethod
+      indexMethod,
+      handleRead
 
     };
 
