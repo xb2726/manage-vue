@@ -20,15 +20,20 @@
         <el-button type="primary" icon="el-icon-search" @click="handleSearch"
           >搜索</el-button
         >
+
+        <el-button type="warning" icon="el-icon-refresh" @click="reset"
+        >重置</el-button
+        >
+
       </div>
       <!-- 表单区 -->
       <el-table
         :data="tableData"
-        stripe
         class="table"
         ref="multipleTable"
         header-cell-class-name="table-header"
         table-layout="auto"
+        :row-class-name="tableRowClassName"
       >
         <el-table-column
           type="index"
@@ -40,7 +45,7 @@
         <el-table-column label="标题" show-overflow-tooltip="true">
           <template #default="scope">
             <div title="点击查看">
-              <el-link type="primary" :href="scope.row.pdfUrl" @click="handleRead(scope.row.id)" target="_blank" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;display: block">{{
+              <el-link type="primary" :underline="false" :href="scope.row.pdfUrl" @click="handleRead(scope.row.id)" target="_blank" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;display: block">{{
                 scope.row.title
               }}</el-link>
             </div>
@@ -100,7 +105,6 @@ export default {
     const pageTotal = ref(0);
 
     const getData = () => {
-      console.log("开始查询")
       pageQuery(param).then((res) => {
 
         tableData.value = res.data.records;
@@ -115,6 +119,17 @@ export default {
       param.pageNum = 1;
       getData();
     };
+    //重置
+    const reset=()=>{
+      param.title='';
+    };
+
+    const tableRowClassName = ({row, rowIndex}) => {
+      if (row.reserved1!==undefined) {
+        return 'success-row'
+      }
+      return ''
+    }
 
     // 分页导航
     const handlePageChange = (val) => {
@@ -127,6 +142,8 @@ export default {
         industryId: id,
       };
       readRecord(param);
+
+      getData();
     }
     // 索引
     const indexMethod = (index) => {
@@ -139,9 +156,11 @@ export default {
       pageTotal,
       getData,
       handleSearch,
+      reset,
       handlePageChange,
       indexMethod,
-      handleRead
+      handleRead,
+      tableRowClassName
 
     };
 
@@ -149,6 +168,11 @@ export default {
 }
 </script>
 
+<style>
+.el-table .success-row {
+  background: #f0f9eb;
+}
+</style>
 <style scoped>
 .handle-box {
   margin-bottom: 20px;
@@ -165,4 +189,6 @@ export default {
 .mr10 {
   margin-right: 10px;
 }
+
+
 </style>

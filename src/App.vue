@@ -3,6 +3,8 @@
 </template>
 
 <script>
+
+
 export default {
   data() {
     return {
@@ -23,26 +25,18 @@ export default {
   methods: {
     // 关闭窗口之前执行
     async beforeunloadHandler(e) {
-      localStorage.removeItem("SD_TOKEN");
-      await this.clearLogin() // 退出登录接口
-      window.close()
+      this.beforeUnloadTime = new Date().getTime()
     },
-    // 关闭窗口之后执行--暂时用不到
+    // 关闭窗口之后执行
     unloadHandler() {
-    },
-    // 退出登录接口
-    clearLogin() {
-      alert(process.env.VUE_APP_BASE_API + '/manage/login/logout')
-      var xhttp = new XMLHttpRequest()
-      xhttp.onreadystatechange = function() {
-        if (xhttp.readyState === 4 && xhttp.status === 200) {
-          console.log(xhttp.responseText)
-        }
+      this.gapTime = new Date().getTime() - this.beforeUnloadTime
+      if (this.gapTime <= 5) { //判断是窗口关闭还是刷新，小于5代表关闭，否则就是刷新。
+        console.log('关闭了浏览器')
+        localStorage.removeItem("SD_TOKEN");
+        // 退出登录接口
+        window.close()
       }
-      xhttp.open('GET', process.env.VUE_APP_BASE_API + '/manage/login/logout', true)
-      alert(process.env.VUE_APP_BASE_API + '/manage/login/logout')
-      xhttp.send()
-    }
+    },
   }
 
 };
